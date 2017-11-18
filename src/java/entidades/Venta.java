@@ -31,7 +31,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Venta.findAll", query = "SELECT v FROM Venta v")
     , @NamedQuery(name = "Venta.findByIdventa", query = "SELECT v FROM Venta v WHERE v.idventa = :idventa")
-    , @NamedQuery(name = "Venta.findByIdDetalleVenta", query = "SELECT v FROM Venta v WHERE v.idDetalleVenta = :idDetalleVenta")
     , @NamedQuery(name = "Venta.findByFechaVenta", query = "SELECT v FROM Venta v WHERE v.fechaVenta = :fechaVenta")
     , @NamedQuery(name = "Venta.findByValor", query = "SELECT v FROM Venta v WHERE v.valor = :valor")})
 public class Venta implements Serializable {
@@ -42,10 +41,6 @@ public class Venta implements Serializable {
     @Basic(optional = false)
     @Column(name = "idventa")
     private Integer idventa;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_detalle_venta")
-    private int idDetalleVenta;
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha_venta")
@@ -63,9 +58,8 @@ public class Venta implements Serializable {
         this.idventa = idventa;
     }
 
-    public Venta(Integer idventa, int idDetalleVenta, Date fechaVenta, int valor) {
+    public Venta(Integer idventa, Date fechaVenta, int valor) {
         this.idventa = idventa;
-        this.idDetalleVenta = idDetalleVenta;
         this.fechaVenta = fechaVenta;
         this.valor = valor;
     }
@@ -76,14 +70,6 @@ public class Venta implements Serializable {
 
     public void setIdventa(Integer idventa) {
         this.idventa = idventa;
-    }
-
-    public int getIdDetalleVenta() {
-        return idDetalleVenta;
-    }
-
-    public void setIdDetalleVenta(int idDetalleVenta) {
-        this.idDetalleVenta = idDetalleVenta;
     }
 
     public Date getFechaVenta() {
