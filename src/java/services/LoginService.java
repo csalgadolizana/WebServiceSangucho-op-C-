@@ -50,7 +50,8 @@ public class LoginService {
             cq.select(cq.from(Login.class));
             Query q = em.createQuery(cq);
             List<Login> lisLogin = q.getResultList();
-            return lisLogin.stream().filter((x) -> x.getUsername().equals(username) && x.getPassword().equals(password)).findFirst().orElse(null) == null ? 0 : 1;
+            int id = lisLogin.stream().filter((x) -> x.getUsername().equals(username) && x.getPassword().equals(password)).findFirst().orElse(null).getId().intValue();
+            return id;
         } catch (Exception e) {
             System.err.println("Error en loginAndroid()");
             System.err.println(e.getMessage());
