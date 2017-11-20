@@ -4,6 +4,30 @@
     <service name="ProductoService">
       <implementation-class>services.ProductoService</implementation-class>
     </service>
+    <service name="ComboService">
+      <implementation-class>services.ComboService</implementation-class>
+    </service>
+    <service name="DetalleService">
+      <implementation-class>services.DetalleService</implementation-class>
+    </service>
+    <service name="PersonalService">
+      <implementation-class>services.PersonalService</implementation-class>
+    </service>
+    <service name="ServicePromocion">
+      <implementation-class>services.ServicePromocion</implementation-class>
+    </service>
+    <service name="VentaService">
+      <implementation-class>services.VentaService</implementation-class>
+    </service>
+    <service name="LoginService">
+      <implementation-class>services.LoginService</implementation-class>
+    </service>
+    <service name="CatalogoService">
+      <implementation-class>services.app.android.CatalogoService</implementation-class>
+    </service>
+    <service name="CompraService">
+      <implementation-class>services.app.android.CompraService</implementation-class>
+    </service>
   </services>
   <clients/>
 </jax-ws>

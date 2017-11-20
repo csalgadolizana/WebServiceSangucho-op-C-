@@ -5,6 +5,7 @@
  */
 package services.app.android;
 
+import clases.app.android.catalogo.Catalogo;
 import clases.app.android.catalogo.Compra;
 import java.util.Date;
 import java.util.List;
@@ -49,16 +50,27 @@ public class CompraService {
     }
 
     @WebMethod
-    public int crearCompras(@WebParam(name = "idusuario") int idusuario, @WebParam(name = "cantidad") int cantidad, @WebParam(name = "precio") int precio,@WebParam(name = "idcatalogo") int idcatalogo) {
+    public int crearCompras(@WebParam(name = "idusuario") int idusuario, @WebParam(name = "cantidad") int cantidad, @WebParam(name = "precio") int precio, @WebParam(name = "idcatalogo") int idcatalogo) {
         try {
+            //seteando los datos para la compra
             Compra p = new Compra();
             p.setId(Integer.parseInt("2"));
             p.setIdusuario(idusuario);
             p.setIdcatalogo(idcatalogo);
             p.setCantidad(cantidad);
             p.setPrecio(precio);
+            //inicia la transaccion de la compra
             utx.begin();
+            //envia el objeto a la bd
             em.persist(p);
+            //confirma la accion
+            utx.commit();
+            //buscamos el catalogo para descontar la contidad comprada
+            Catalogo cata = em.find(Catalogo.class, new Integer(idcatalogo));
+            int cantidadFinal = (cata.getStock() - cantidad);
+            cata.setStock(cantidadFinal);
+            utx.begin();
+            cata = em.merge(cata);
             utx.commit();
             return 1;
         } catch (Exception ex) {
@@ -69,7 +81,7 @@ public class CompraService {
     }
 
     @WebMethod
-    public int modificarCompras(@WebParam(name = "id") int id,@WebParam(name = "idusuario") int idusuario, @WebParam(name = "cantidad") int cantidad, @WebParam(name = "precio") int precio) {
+    public int modificarCompras(@WebParam(name = "id") int id, @WebParam(name = "idusuario") int idusuario, @WebParam(name = "cantidad") int cantidad, @WebParam(name = "precio") int precio) {
         try {
 
             Compra p = em.find(Compra.class, new Integer(id));

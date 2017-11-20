@@ -6,8 +6,11 @@
 package services.app.android;
 
 import clases.app.android.catalogo.Catalogo;
+import clases.app.android.catalogo.Compra;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
@@ -24,13 +27,13 @@ import javax.transaction.UserTransaction;
  */
 @WebService(serviceName = "CatalogoService")
 public class CatalogoService {
-
+    
     @PersistenceContext
     EntityManager em;
-
+    
     @Resource
     UserTransaction utx;
-
+    
     @WebMethod
     public List<Catalogo> listarCatalogo() {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -38,7 +41,17 @@ public class CatalogoService {
         Query q = em.createQuery(cq);
         return q.getResultList();
     }
-
+    
+    @WebMethod
+    public List<Compra> miCatalogo(@WebParam(name = "idPersona") int idPersona) {
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(Compra.class));
+        Query q = em.createQuery(cq);
+        List<Compra> lis = q.getResultList();
+//        Collecc
+        return lis.stream().filter((x) -> x.getIdusuario() == idPersona).collect(Collectors.toList());
+    }
+    
     @WebMethod
     public Catalogo buscarCatalogo(@WebParam(name = "id") int id) {
         try {
@@ -47,5 +60,5 @@ public class CatalogoService {
             return null;
         }
     }
-
+    
 }
